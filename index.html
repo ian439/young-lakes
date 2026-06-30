@@ -164,12 +164,12 @@
   @media (prefers-reduced-motion:reduce){.stargaze .sg-title .sp{animation:none;text-shadow:0 0 14px var(--cyan)}}
 
   /* soft scroll indicator (fixed; fades once you scroll) */
-  .scrollhint{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:900;pointer-events:none;
+  .scrollhint{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:900;pointer-events:none;
     display:flex;flex-direction:column;align-items:center;gap:3px;
-    font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#eef3f7;
-    background:rgba(14,17,23,.34);backdrop-filter:blur(5px);padding:8px 16px;border-radius:999px;
-    box-shadow:0 4px 18px -8px rgba(0,0,0,.8);transition:opacity .5s, transform .5s}
-  .scrollhint .ch{font-size:17px;line-height:.8;animation:bob 1.8s ease-in-out infinite}
+    font-family:"Space Mono",monospace;font-size:13.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#f4f8fb;
+    background:rgba(19,24,31,.58);backdrop-filter:blur(11px);padding:13px 26px;border-radius:999px;
+    box-shadow:0 10px 30px -8px rgba(0,0,0,.85), 0 0 30px -6px var(--cyan);transition:opacity .5s, transform .5s}
+  .scrollhint .ch{font-size:24px;line-height:.8;color:var(--cyan);text-shadow:0 0 12px var(--cyan);animation:bob 1.8s ease-in-out infinite}
   @keyframes bob{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(5px);opacity:1}}
   .scrollhint.hide{opacity:0;transform:translateX(-50%) translateY(10px)}
   @media (prefers-reduced-motion:reduce){.scrollhint .ch{animation:none}}
@@ -201,7 +201,7 @@
   .photo{position:relative;aspect-ratio:16/10;overflow:hidden;z-index:1;background:var(--granite-2)}
   .photo .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
     filter:blur(20px) brightness(.55) saturate(1.2);transform:scale(1.15);z-index:0}
-  .photo .fg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1}
+  .photo .fg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
   .photo .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:22px 12px 9px;
     font-family:"Space Mono",monospace;font-size:11px;color:#f1ece0;text-align:center;
     background:linear-gradient(0deg,rgba(14,17,23,.85),transparent);text-shadow:0 1px 4px #000}
@@ -400,21 +400,21 @@ var STATS = [
   {k:"High pt", v:"10,912", u:"ft"}, {k:"Gain", v:"+2,300", u:"ft"},
 ];
 var DAYS = [
-  {tag:"DAY 1", title:"In to Lower Young Lake", miles:"6.5 mi", gain:"+1,600 ft", time:"4 to 5 hr",
+  {tag:"DAY 1", title:"In to Lower Young Lake", miles:"6.5 mi", gain:"+1,600 ft", time:"4 to 5 hr", hi:"66°", lo:"36°F", pos:"50% 45%",
    focus:"lower", view:{center:[37.905,-119.353], zoom:13},
    text:"Climb past Dog Lake and up the Young Lakes trail through lodgepole and meadow, then break out into the lake basin under Ragged Peak. Make camp at the lower lake.",
    photo:"Camp at Lower Young Lake, Ragged Peak behind"},
-  {tag:"DAY 2", title:"Middle & upper lakes", miles:"2 to 3 mi", gain:"+250 ft", time:"half day",
+  {tag:"DAY 2", title:"Middle & upper lakes", miles:"2 to 3 mi", gain:"+250 ft", time:"half day", hi:"68°", lo:"35°F", pos:"50% 82%",
    optional:true, focus:"upper", view:{center:[37.9365,-119.3380], zoom:15},
    text:"Wander the short, trailless granite benches up to the middle and upper lakes. Slabs, swimming, a long lazy afternoon.",
    alt:"Optional. Or just post up at the lower lake and do nothing.",
    photo:"Upper Young Lake granite bowl"},
-  {tag:"DAY 3", title:"Ragged Peak scramble", miles:"3 to 4 mi RT", gain:"+1,050 ft", time:"4 to 6 hr",
+  {tag:"DAY 3", title:"Ragged Peak scramble", miles:"3 to 4 mi RT", gain:"+1,050 ft", time:"4 to 6 hr", hi:"58°", lo:"34°F", pos:"50% 42%",
    optional:true, focus:"ragged", view:{center:[37.9331,-119.3533], zoom:14},
    text:"A class 2 to 3 scramble up Ragged Peak's slabs and blocks for the full Cathedral Range view. It takes real route finding, so turn around if it stops feeling right.",
    alt:"Optional summit day. Or another easy day by the water.",
    photo:"Ragged Peak above the Young Lakes basin"},
-  {tag:"DAY 4", title:"Out via Glen Aulin", miles:"6 mi", gain:"down 1,300 ft", time:"3 to 4 hr",
+  {tag:"DAY 4", title:"Out via Glen Aulin", miles:"6 mi", gain:"down 1,300 ft", time:"3 to 4 hr", hi:"70°", lo:"38°F", pos:"45% 52%",
    focus:"glenJct", view:{center:[37.905,-119.372], zoom:13},
    text:"Head west on the Young Lakes trail to the PCT near Glen Aulin and Soda Springs, then follow the meadows back to the trailhead and close the loop.",
    photo:"Glen Aulin trail back through the meadows"},
@@ -531,8 +531,8 @@ DAYS.forEach(function(day,i){
   card.className='day'; card.type='button'; card.setAttribute('aria-pressed','false');
   card.innerHTML=
     '<figure class="photo">'+
-      '<img class="bg" src="'+IMG['day'+(i+1)]+'" alt="" aria-hidden="true">'+
-      '<img class="fg" src="'+IMG['day'+(i+1)]+'" alt="'+day.photo+'" loading="lazy" '+
+      
+      '<img class="fg" src="'+IMG['day'+(i+1)]+'" alt="'+day.photo+'" loading="lazy" style="object-position:'+day.pos+'" '+
         'onerror="this.parentNode.querySelectorAll(\'img\').forEach(function(x){x.style.display=\'none\'});this.parentNode.querySelector(\'.fallback\').style.display=\'flex\'">'+
       '<figcaption class="cap">'+day.photo+'</figcaption>'+
       '<div class="fallback">'+photoSvg()+'<span style="position:relative;z-index:1">'+day.photo+'</span></div>'+
@@ -543,7 +543,7 @@ DAYS.forEach(function(day,i){
       '<h3>'+day.title+'</h3>'+
       '<p>'+day.text+'</p>'+
       (day.alt?'<p class="alt">'+day.alt+'</p>':'')+
-      '<div class="legmeta"><span>↗ <b>'+day.gain+'</b></span><span>◷ <b>'+day.time+'</b></span></div>'+
+      '<div class="legmeta"><span>↗ <b>'+day.gain+'</b></span><span>◷ <b>'+day.time+'</b></span><span>day <b>'+day.hi+'</b> · night <b>'+day.lo+'</b></span></div>'+
     '</div>';
   card.addEventListener('click', function(){ selectDay(i,true); });
   daysEl.appendChild(card); dayCards.push(card);
@@ -652,7 +652,7 @@ document.getElementById('gpxBtn').addEventListener('click', function(){
 document.getElementById('datanote').innerHTML=
   '<b>Map data.</b> Trail track and waypoints from OpenStreetMap; Ragged Peak summit from Wikipedia (NAVD 88). '+
   'The two short connectors between the parking area and the mapped trail ends (≈¼ mi each) are approximate. '+
-  'Lake elevations for Middle/Upper are estimates.'+
+  'Lake elevations for Middle/Upper are estimates, and temperatures are typical mid-summer highs and overnight lows.'+
   '<br><b>Photos</b> (Wikimedia Commons, CC): Young Lakes sunset & clouds © Jasonseannn (CC BY-SA 4.0) · '+
   'Lower Young Lake © Navin75 (CC BY-SA 2.0) · Ragged Peak © Ken.Liou / from Mt Conness (CC BY-SA) · '+
   'Dog Lake & Tuolumne Meadows (Commons, CC) · Glen Aulin Falls (CC BY 2.0).';
